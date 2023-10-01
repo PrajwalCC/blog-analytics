@@ -12,7 +12,7 @@ async function fetchData(req, res, next) {
         req.blogData = response.data.blogs;
         next();
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching data from the blog API.' });
+        next({status: 500, message: 'Error fetching data from the blog API.' });
     }
 }
 

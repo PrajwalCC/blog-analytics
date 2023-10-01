@@ -17,7 +17,7 @@ function analyzeData(req, res, next) {
       
         next();
     } catch (error) {
-        res.status(500).json({ message: 'Error in Analysing data of blogs.' });
+        next({status: 500, message: 'Error in Analysing data of blogs.' });
     }
 }
 

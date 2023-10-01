@@ -12,14 +12,14 @@ let cache = {
 };
 
 async function fetchWithCache(req, res, next) {
-    const currentTime = new Date().getTime();
-
-    if (cache.data && (currentTime - cache.timestamp < cache.expiration)) {
-        req.blogData = cache.data;
-        return next();
-    }
-
+    
     try {
+        
+        const currentTime = new Date().getTime();
+        if (cache.data && (currentTime - cache.timestamp < cache.expiration)) {
+            req.blogData = cache.data;
+            return next();
+        }
         const response = await axios.get(BLOG_API_URL, { headers: BLOG_API_HEADERS });
         req.blogData = response.data.blogs;
 
@@ -28,7 +28,7 @@ async function fetchWithCache(req, res, next) {
 
         next();
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching data from the blog API.' });
+        next({status: 500, message: 'Error fetching data from the blog API.' });
     }
 }
 
