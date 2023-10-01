@@ -26,20 +26,20 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.get('/api/blog-stats', fetchData, analyzeData, (req, res) => {
+app.get('/api/blog-stats', fetchData, analyzeData, (req, res, next) => {
   try {
     res.json(req.analytics);
   } catch (error) {
-    res.status(500).json({ message: 'Something Went Wrong!!!'});
+    next(error);
   }
 });
 
 
-app.get('/api/blog-search', fetchData, (req, res) => {
+app.get('/api/blog-search', fetchData, (req, res, next) => {
   try {
     const query = req.query.query;
     if (!query) {
-      res.status(400).json({ message: 'Missing query parameter'});
+      res.json(req.blogData);
     }
     else{
       const lowercaseQuery = query.toLowerCase();
@@ -47,24 +47,24 @@ app.get('/api/blog-search', fetchData, (req, res) => {
       res.json(results);
     }
   } catch (error) {
-    res.status(500).json({ message: 'Something Went Wrong!!!'});
+    next(error);
   }
 });
 
 
-app.get('/api/blog-stats-cached', fetchWithCache, analyzeData, (req, res) => {
+app.get('/api/blog-stats-cached', fetchWithCache, analyzeData, (req, res, next) => {
     try {
       res.json(req.analytics);
     } catch (error) {
-      res.status(500).json({ message: 'Something Went Wrong!!!'});
+      next(error);
     }
 });
 
-app.get('/api/blog-search-cached', fetchWithCache, (req, res) => {
+app.get('/api/blog-search-cached', fetchWithCache, (req, res, next) => {
   try {
     const query = req.query.query;
     if (!query) {
-      res.status(400).json({ message: 'Missing query parameter'});
+      res.json(req.blogData);
     }
     else{ 
       const lowercaseQuery = req.query.query.toLowerCase();
@@ -73,7 +73,7 @@ app.get('/api/blog-search-cached', fetchWithCache, (req, res) => {
     }
     
   } catch (error) {
-    res.status(500).json({ message: 'Something Went Wrong!!!'});
+    next(error);
   }
 });
 
