@@ -22,7 +22,7 @@ async function fetchWithCache(req, res, next) {
     try {
         const response = await axios.get(BLOG_API_URL, { headers: BLOG_API_HEADERS });
         req.blogData = response.data.blogs;
-        
+
         cache.data = response.data.blogs;
         cache.timestamp = currentTime;
 
